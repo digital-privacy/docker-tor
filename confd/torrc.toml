@@ -1,0 +1,4 @@
+[template]
+src = "torrc.tmpl"
+dest = "/etc/tor/torrc"
+reload_cmd = "systemctl reload tor"
