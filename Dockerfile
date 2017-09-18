@@ -13,7 +13,6 @@ RUN wget https://github.com/kelseyhightower/confd/releases/download/v0.11.0/conf
     mkdir -p /etc/confd/{templates,conf.d}
 
 
-COPY confd/confd.toml /etc/confd/confd.toml
 COPY confd/torrc.toml /etc/confd/conf.d/torrc.toml
 
 COPY tor/torrc.tmpl /etc/confd/templates/torrc.tmpl

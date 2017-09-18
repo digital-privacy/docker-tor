@@ -1,9 +1,2 @@
 confdir = "/etc/confd"
 interval = 20
-backend = "etcd"
-nodes = [
-        "http://etcd-0:2379"
-]
-prefix = "/"
-scheme = "http"
-verbose = true
