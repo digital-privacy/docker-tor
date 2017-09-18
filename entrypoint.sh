@@ -8,8 +8,8 @@ echo "Config created."
 
 sleep 5
 
-echo "Starting Tor..."
-
 echo "Confd now watching for changes..."
-
 confd -interval 5 -config-file /etc/confd/confd.toml &
+
+echo "Starting Tor..."
+exec /usr/bin/tor -f /etc/tor/torrc
