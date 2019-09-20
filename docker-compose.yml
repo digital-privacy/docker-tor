@@ -1,0 +1,19 @@
+version: "2"
+services:
+  relay:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: echo "hello"
+    env_file:
+      - .env
+
+  bridge:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    command: echo "hello"
+    env_file:
+      - .env

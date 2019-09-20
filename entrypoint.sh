@@ -2,7 +2,7 @@
 echo "Starting container..."
 echo "Generating initial tor configuration with confd..."
 
-confd -onetime -config-file /etc/confd/confd.toml;
+confd -onetime -config-file /etc/confd/confd.toml
 
 echo "Config created."
 
