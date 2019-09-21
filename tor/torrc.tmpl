@@ -1,22 +1,9 @@
 
-SocksPort {{ getenv "SOCKS_HOST" "127.0.0.1"}}:{{getenv "SOCKS_PORT" "9050"}}
+SocksPort 0
+Log info stderr
 
-#SocksPolicy accept 192.168.0.0/16
-#SocksPolicy reject *
-SocksPolicy {{ getenv "SOCKS_POLICY" "accept *"}}
-Log debug stderr
 RunAsDaemon {{ getenv "DAEMON" "0"}}
-
-#ControlPort 9051
-#HashedControlPassword 16:872860B76453A77D60CA2BB8C1A7042072093276A3D701AD684053EC4C
-#CookieAuthentication 1
-
-#HiddenServiceDir /var/lib/tor/hidden_service/
-#HiddenServicePort 80 127.0.0.1:80
-
-#HiddenServiceDir /var/lib/tor/other_hidden_service/
-#HiddenServicePort 80 127.0.0.1:80
-#HiddenServicePort 22 127.0.0.1:22
+ControlSocket 0
 
 DataDirectory {{ getenv "DATADIR" "/var/lib/tor" }}
 
@@ -24,25 +11,30 @@ ORPort {{ getenv "ORPORT" "9001" }}
 
 Nickname {{ getenv "NICKNAME" "test" }}
 
-#RelayBandwidthRate 100 KB  # Throttle traffic to 100KB/s (800Kbps)
-#RelayBandwidthBurst 200 KB # But allow bursts up to 200KB/s (1600Kbps)
-#AccountingMax 4 GB
-#AccountingStart day 00:00
-#AccountingStart month 3 15:00
+RelayBandwidthRate 100 KB  # Throttle traffic to 100KB/s (800Kbps)
+RelayBandwidthBurst 200 KB # But allow bursts up to 200KB/s (1600Kbps)
 
 ContactInfo {{ getenv "CONTACTINFO" "info@info.info" }}
 
-#DirPort 9030 # what port to advertise for directory connections
+DirPort {{ getenv "DIR_PORT" "9091"}}
+DirPortFrontPage /etc/tor/tor-exit-notice.html
 
-#DirPort 80 NoListen
-#DirPort 127.0.0.1:9091 NoAdvertise
-
-#DirPortFrontPage /etc/tor/tor-exit-notice.html
+Sandbox 1
+# HardwareAccel 1
+# AvoidDiskWrites 1
+# NoExec 1
+# UseDNSCache 1
+# UseEntryGuards 1
+# SafeSocks
+# ClientRejectInternalAddresses
+# RefuseUnknownExits
 
 {{ if eq "accept" (getenv "EXIT_POLICY") }}
 ExitPolicy accept *:6660-6667,reject *:* # allow irc ports but no more
 {{ else }}
+
 ExitPolicy reject *:* # no exits allowed
+ExitPolicy reject6 *:*
 {{ end }}
 
 {{ if eq "bridge" (getenv "EXIT_POLICY") }}

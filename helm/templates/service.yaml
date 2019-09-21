@@ -11,9 +11,15 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.service.port }}
       protocol: TCP
-      name: http
+      name: tor
+      nodePort: {{ .Values.service.port }}
+    - port: {{ .Values.service.dirport }}
+      targetPort: {{ .Values.service.dirport }}
+      protocol: TCP
+      name: dirport
+      nodePort: {{ .Values.service.dirport }}
   selector:
     app.kubernetes.io/name: {{ include "helm.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

@@ -4,7 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: echo "hello"
     env_file:
       - .env
 
@@ -14,6 +13,5 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8080:8080
-    command: echo "hello"
     env_file:
       - .env

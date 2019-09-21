@@ -24,17 +24,31 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 80
+            - name: tor
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+            - name: dirport
+              containerPort: {{ .Values.service.dirport }}
+              protocol: TCP
+          env:
+          - name: CONTACTINFO
+            value: '"{{ .Values.tor.contactInfo }}"'
+          - name: DAEMON
+            value: "0"
+          - name: DIR_PORT
+            value: '"{{ .Values.service.dirport }}"'
+          - name: DATADIR
+            value: /var/lib/tor
+          - name: EXIT_POLICY
+            value: '"{{ .Values.tor.exitPolicy }}"'
+          - name: NICKNAME
+            value: '"{{ .Values.tor.nickName }}"'
+          - name: ORPORT
+            value: '"{{ .Values.service.port }}"'
+          - name: SOCKS_HOST
+            value: 0.0.0.0
+          - name: SOCKS_PORT
+            value: "9050"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

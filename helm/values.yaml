@@ -5,22 +5,27 @@
 replicaCount: 1
 
 image:
-  repository: nginx
-  tag: stable
-  pullPolicy: IfNotPresent
+  repository: devsecnull/tor
+  tag: latest
+  pullPolicy: Always
 
 nameOverride: ""
 fullnameOverride: ""
 
+tor:
+  exitPolicy: reject
+  nickName: test1
+  contactInfo: test@devsecnull.io
+
 service:
-  type: ClusterIP
-  port: 80
+  type: NodePort
+  port: 32701
+  dirport: 32702
 
 ingress:
   enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  annotations:
+    kubernetes.io/ingress.class: nginx
   paths: []
   hosts:
     - chart-example.local
