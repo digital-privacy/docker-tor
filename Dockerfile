@@ -27,8 +27,9 @@ COPY tor/torrc.tmpl /etc/confd/templates/torrc.tmpl
 
 
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-RUN chown -R debian-tor:debian-tor /etc/tor
+RUN chmod +x /entrypoint.sh && \
+    chmod 755 -R /etc/tor && \
+    chown -R debian-tor:debian-tor /etc/tor
 RUN mkdir -p /var/lib/tor && chown -R debian-tor:debian-tor /var/lib/tor
 CMD ""
 

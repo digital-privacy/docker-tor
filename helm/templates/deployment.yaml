@@ -20,6 +20,12 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
+        - name: init
+          image: busybox:latest
+          command: ['/bin/chown', 'debian-tor:debian-tor', '/var/lib/tor']
+          volumeMounts:
+          - name: {{ .Release.Name }}-claim0
+            mountPath: /var/lib/tor
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}

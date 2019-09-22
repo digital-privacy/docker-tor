@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
   name: {{ .Release.Name }}-claim0
 spec:
+  storageClassName: nfs
   accessModes:
   - ReadWriteOnce
   resources:

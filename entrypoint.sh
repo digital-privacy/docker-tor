@@ -1,6 +1,7 @@
 #!/bin/bash
 echo "Starting container..."
 echo "Generating initial tor configuration with confd..."
+chown -R debian-tor:debian-tor /var/lib/tor
 
 confd -onetime -config-file /etc/confd/confd.toml
 
