@@ -1,12 +1,12 @@
-FROM debian:unstable-slim
+FROM debian:buster-slim
 
 LABEL Name=Tor \
     Version=Edge
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y gnupg curl wget unzip runit
 
-RUN echo 'deb https://deb.torproject.org/torproject.org sid main \n\
-    deb-src https://deb.torproject.org/torproject.org sid main \n'\
+RUN echo 'deb https://deb.torproject.org/torproject.org buster main \n\
+    deb-src https://deb.torproject.org/torproject.org buster main \n'\
     >> /etc/apt/sources.list
 
 RUN curl https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --import && \
@@ -19,9 +19,6 @@ RUN wget https://github.com/kelseyhightower/confd/releases/download/v0.14.0/conf
     chmod +x /usr/bin/confd && \
     mkdir -p /etc/confd/{templates,conf.d}
 
-RUN echo "deb http://deb.torproject.org/torproject.org jessie main" > /etc/apt/sources.list.d/tor.list
-
-
 
 
 COPY confd/torrc.toml /etc/confd/conf.d/torrc.toml
@@ -32,6 +29,7 @@ COPY tor/torrc.tmpl /etc/confd/templates/torrc.tmpl
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 RUN chown -R debian-tor:debian-tor /etc/tor
+RUN mkdir -p /var/lib/tor && chown -R debian-tor:debian-tor /var/lib/tor
 CMD ""
 
 ENV key=value \

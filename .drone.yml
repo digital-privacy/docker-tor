@@ -1,0 +1,36 @@
+---
+kind: secret
+name: docker_username
+get:
+  path: docker
+  name: username
+
+---
+kind: secret
+name: docker_password
+get:
+  path: docker
+  name: password
+---
+kind: pipeline
+name: build
+type: docker
+
+steps:
+  - name: publish_tor
+    image: docker:dind
+    privileged: true
+    settings:
+      auto_tag: true
+      auto_tag_suffix: linux-amd64
+      dockerfile: Dockerfile
+      repo: devsecnull/tor
+      cache_from: devsecnull/tor:latest
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+    when:
+      event:
+        - push
+        - tag

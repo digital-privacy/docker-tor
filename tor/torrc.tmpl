@@ -3,9 +3,8 @@ SocksPort 0
 Log info stderr
 
 RunAsDaemon {{ getenv "DAEMON" "0"}}
-ControlSocket 0
 
-DataDirectory {{ getenv "DATADIR" "/var/lib/tor" }}
+DataDirectory {{ getenv "DATADIR" "/tmp/tor" }}
 
 ORPort {{ getenv "ORPORT" "9001" }}
 
@@ -15,7 +14,7 @@ RelayBandwidthRate 100 KB  # Throttle traffic to 100KB/s (800Kbps)
 RelayBandwidthBurst 200 KB # But allow bursts up to 200KB/s (1600Kbps)
 
 ContactInfo {{ getenv "CONTACTINFO" "info@info.info" }}
-
+ControlPort 9051
 DirPort {{ getenv "DIR_PORT" "9091"}}
 DirPortFrontPage /etc/tor/tor-exit-notice.html
 
@@ -30,7 +29,7 @@ Sandbox 1
 # RefuseUnknownExits
 
 {{ if eq "accept" (getenv "EXIT_POLICY") }}
-ExitPolicy accept *:6660-6667,reject *:* # allow irc ports but no more
+ExitPolicy reject *:* # allow irc ports but no more
 {{ else }}
 
 ExitPolicy reject *:* # no exits allowed
