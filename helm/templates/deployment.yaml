@@ -30,6 +30,9 @@ spec:
             - name: dirport
               containerPort: {{ .Values.service.dirport }}
               protocol: TCP
+          volumeMounts:
+          - name: {{ .Release.Name }}-claim0
+            mountPath: /var/lib/tor
           env:
           - name: CONTACTINFO
             value: '"{{ .Values.tor.contactInfo }}"'
@@ -63,3 +66,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+      volumes:
+      - name: {{ .Release.Name }}-claim0
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-claim0
