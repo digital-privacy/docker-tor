@@ -9,8 +9,8 @@ ORPort {{ getenv "ORPORT" "9001" }}
 
 Nickname {{ getenv "NICKNAME" "test" }}
 
-RelayBandwidthRate 100 KB  # Throttle traffic to 100KB/s (800Kbps)
-RelayBandwidthBurst 200 KB # But allow bursts up to 200KB/s (1600Kbps)
+RelayBandwidthRate 200 KB  # Throttle traffic to 100KB/s (800Kbps)
+RelayBandwidthBurst 400 KB # But allow bursts up to 200KB/s (1600Kbps)
 
 ContactInfo {{ getenv "CONTACTINFO" "info@info.info" }}
 ControlPort 9051

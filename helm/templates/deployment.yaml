@@ -19,13 +19,19 @@ spec:
         app.kubernetes.io/name: {{ include "helm.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
-      containers:
+      initContainers:
         - name: init
-          image: busybox:latest
-          command: ['/bin/chown', 'debian-tor:debian-tor', '/var/lib/tor']
-          volumeMounts:
-          - name: {{ .Release.Name }}-claim0
-            mountPath: /var/lib/tor
+        image: busybox:latest
+        command: ["/bin/sh", "-c"]
+        args:
+          - echo starting;
+            chown -R 102:102 /var/lib/tor;
+            chmod -R 770 /var/lib/tor;
+            echo done;
+        volumeMounts:
+        - name: {{ .Release.Name }}-claim0
+          mountPath: /var/lib/tor
+      containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
